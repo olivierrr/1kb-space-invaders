@@ -22,7 +22,7 @@
 	@t = 
 	@a = splice flag
 
-	@v = box collision fn
+	@v = 
 
 	@i = temp iterator
 	@j = temp iterator
@@ -44,7 +44,7 @@ H = innerHeight
 c = cc()
 c2= cc()
 
-p = 0
+p = .5
 z = .05
 b = []
 n = []
@@ -78,9 +78,6 @@ function cc(){
 	return e.getContext('2d')
 }
 
-// box collision
-function v(p1, p2) { return p1.x < p2.x + 10 && p1.x + 10 > p2.x && p1.y < p2.y + 10 && p1.y + 10 > p2.y }
-
 // update loop
 (function u(){
 	o++
@@ -90,7 +87,7 @@ function v(p1, p2) { return p1.x < p2.x + 10 && p1.x + 10 > p2.x && p1.y < p2.y 
 	// player moves
 	if(k[65]|k[68]) p = m.min(m.max(p+= k[65] ? -.01 : .01, 0), 1-z)
 	// player shoots
-	if(k[32] && o%5<1)b.push({x:p, y:1, v:-.01})
+	if(k[32] && o%10<1)b.push({x:p, y:1, v:-.01})
 
 	// invaders shoot
 	ff = n[~~(m.random()*n[l])]
@@ -104,31 +101,32 @@ function v(p1, p2) { return p1.x < p2.x + 10 && p1.x + 10 > p2.x && p1.y < p2.y 
 		y= (l.y+=l.v)*H
 
 		// remove bullets that go out of bounds...
-		if(l.y>H|l.y<0) a=1
+		if(l.y>1|l.y<-.2) a=1
 
+		// bitmap coll
 		if(c2.getImageData(x, y, 1, 1).data[3]>0){
 			c2.globalCompositeOperation='destination-out'
 			c2.beginPath()
-			// using 7 instead of PI*2, works fine
 			c2.arc(x,y,20,0,7)
 			c2.fill()
 			a=1
 		}
 
-		// collision
-		n[q](function(e){
-			//if(v(l,e))console.log('!')			
+		// box collision
+		n[q](function(e, i){
+			if(!(l.x+z<e.x|l.y+z<e.y|l.y>e.y+z|l.x>e.x+z))if(l.v<0) n.splice(i,1), a=1
 		})
 
 		c[f](x, y, 10, 40)
 
-		if(a === 1)b.splice(i, 1),a=0
+		// is making screen flicker //
+		if(a)b.splice(i, 1),a=0
 	})
 
 	// draw enemies
 	n[q](function(e){
 		if(e.x>.97|e.x<0) s*=-1,n[q](function(e){e.y+=.15})
-		c[f](W*(e.x+=s),H*e.y,30,30)
+		c[f](W*(e.x+=s),H*e.y,H*z,H*z)
 	})
 
 	c[f](W*p, H-H*z, H*z, H*z)
