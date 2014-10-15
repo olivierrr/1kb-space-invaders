@@ -18,7 +18,8 @@
 	@y = temp storage
 	@$ = document
 	@o = frame counter
-	@l = 'length' shortcut
+	@l = 
+	@L = 'length' reference
 	@t = 
 	@a = splice flag
 
@@ -50,14 +51,17 @@ b = []
 n = []
 m = Math
 
+t = .01
+
 k = {}
-
 a = 0
-
 s = .002
+
+S='splice'
+
 f = 'fillRect'
 q = 'forEach'
-l = 'length'
+L = 'length'
 
 o = 0
 
@@ -85,16 +89,17 @@ function cc(){
 	c.clearRect(0,0,W,H)
 
 	// player moves
-	if(k[65]|k[68]) p = m.min(m.max(p+= k[65] ? -.01 : .01, 0), 1-z)
+	if(k[65]|k[68]) p = m.min(m.max(p+= k[65] ? -t : t, 0), 1-z)
 	// player shoots
-	if(k[32] && o%10<1)b.push({x:p, y:1, v:-.01})
+	if(k[32] && o%5<1)b.push({x:p, y:1, v:-t})
 
 	// invaders shoot
-	ff = n[~~(m.random()*n[l])]
-	if(o%20<1&&n[l]>0) b.push({x:ff.x, y:ff.y , v:.01})
+	ff = n[~~(m.random()*n[L])]
+	if(o%9<1&&n[L]>0) b.push({x:ff.x, y:ff.y , v:t})
 
 	// draw bullets and deal with collision
-	b[q](function(l, i){
+	i=b[L];while(i--){
+		l=b[i]
 
 		// -5+half-of-player on x to set pivot to middle
 		x= W*l.x-5 + H*z/2
@@ -114,24 +119,23 @@ function cc(){
 
 		// box collision
 		n[q](function(e, i){
-			if(!(l.x+z<e.x|l.y+z<e.y|l.y>e.y+z|l.x>e.x+z))if(l.v<0) n.splice(i,1), a=1
+			if(!(l.x+z<e.x|l.y+z<e.y|l.y>e.y+z|l.x>e.x+z))if(l.v<0) n[S](i,1),a=1
 		})
 
 		//if(l.y>.95 && l.v>0 && p-l.x<z/2 && p-l.x>-z/2) ''
 
-		c[f](x, y, 10, 40)
-
-		// is making screen flicker //
-		if(a)b.splice(i, 1),a=0
-	})
+		// remove or draw?
+		a?(b[S](i,1),a=0):c[f](x, y, 10, 30)
+	}
 
 	// draw enemies
 	n[q](function(e){
-		if(e.x>.97|e.x<0) s*=-1,n[q](function(e){e.y+=.10})
+		if(e.x>.97|e.x<0) s*=-1,n[q](function(e){e.y+=.1})
 		c[f](W*(e.x+=s),H*e.y,H*z,H*z)
 	})
 
 	c[f](W*p, H-H*z, H*z, H*z)
 
 	requestAnimationFrame(u)
+
 })()
