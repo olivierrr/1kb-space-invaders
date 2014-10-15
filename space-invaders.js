@@ -54,7 +54,7 @@ k = {}
 
 a = 0
 
-s = .001
+s = .002
 f = 'fillRect'
 q = 'forEach'
 l = 'length'
@@ -63,7 +63,7 @@ o = 0
 
 // start invaders and draw inital blocks
 // 5 rows // 3 columns
-for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .7*H, W/10, 100)
+for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .8*H, W/10, 50)
 
 // key events
 onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
@@ -117,6 +117,8 @@ function cc(){
 			if(!(l.x+z<e.x|l.y+z<e.y|l.y>e.y+z|l.x>e.x+z))if(l.v<0) n.splice(i,1), a=1
 		})
 
+		//if(l.y>.95 && l.v>0 && p-l.x<z/2 && p-l.x>-z/2) ''
+
 		c[f](x, y, 10, 40)
 
 		// is making screen flicker //
@@ -125,10 +127,11 @@ function cc(){
 
 	// draw enemies
 	n[q](function(e){
-		if(e.x>.97|e.x<0) s*=-1,n[q](function(e){e.y+=.15})
+		if(e.x>.97|e.x<0) s*=-1,n[q](function(e){e.y+=.10})
 		c[f](W*(e.x+=s),H*e.y,H*z,H*z)
 	})
 
 	c[f](W*p, H-H*z, H*z, H*z)
+
 	requestAnimationFrame(u)
 })()
