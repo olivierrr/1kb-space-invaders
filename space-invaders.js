@@ -38,12 +38,21 @@
 
 // player input easing?
 
-$ = document
-
 W = innerWidth
 H = innerHeight
-c = cc()
-c2= cc()
+
+$ = document
+C = 'children'
+G = 'getContext'
+
+c  = $.body[C][1][G]('2d')
+c2 = $.body[C][0][G]('2d')
+
+// width/height not working from css? TODO fix... later
+$.body[C][1].width = W
+$.body[C][1].height = H
+$.body[C][0].width = W
+$.body[C][0].height = H
 
 p = .5
 z = .05
@@ -72,18 +81,8 @@ for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .8*
 // key events
 onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 
-// insert canvas to dom - returns 2d context
-function cc(){
-	e = $.createElement('canvas')
-	e.style.position='absolute'
-	e.width=W
-	e.height=H
-	$.body.appendChild(e)
-	return e.getContext('2d')
-}
-
 // update loop
-(function u(){
+;(function u(){
 	o++
 
 	c.clearRect(0,0,W,H)

@@ -5,14 +5,29 @@
 	<title> 1kb space invaders </title>
 
 	<style>
-		body {
+		body, html {
 			overflow: hidden;
 			margin: 0;
 			padding: 0;
+			width: 100%;
+			height: 100%;
 		}
+
+		canvas {
+			display: block;
+			position: absolute;
+		}
+
 	</style>
+
+
 </head>
 <body>
+
+	<canvas class="game"></canvas>
+	<canvas class="game"></canvas>
+
 	<script src="space-invaders.js"></script>
+
 </body>
 </html>
