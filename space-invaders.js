@@ -88,8 +88,12 @@ function cc(){
 
 	c.clearRect(0,0,W,H)
 
-	// player moves
-	if(k[65]|k[68]) p = m.min(m.max(p+= k[65] ? -t : t, 0), 1-z)
+	// player movement with edge handling
+	//if(k[65]|k[68]) p = m.min(m.max(p+= k[65] ? -t : t, 0), 1-z)
+
+	// player movement without edge handling
+	p+=k[65]?-t:k[68]?+t:0
+
 	// player shoots
 	if(k[32] && o%5<1)b.push({x:p, y:1, v:-t})
 
