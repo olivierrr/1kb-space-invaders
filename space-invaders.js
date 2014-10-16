@@ -101,6 +101,7 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 	if(o%9<1&&n[L]>0) b.push({x:ff.x, y:ff.y , v:t})
 
 	// draw bullets and deal with collision
+	// itterating in reverse because we need to remove bullets...
 	i=b[L];while(i--){
 		l=b[i]
 
@@ -133,7 +134,8 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 
 	// draw enemies
 	n[q](function(e){
-		if(e.x>.97|e.x<0) s*=-1,n[q](function(e){e.y+=.1})
+		if(e.x>1-z|e.x<0)s=e.x<0?m.abs(s):-m.abs(s),n[q](function(e){e.y+=.1})
+		if(n[L]<2)s=s*1.01
 		c[f](W*(e.x+=s),H*e.y,H*z,H*z)
 	})
 
