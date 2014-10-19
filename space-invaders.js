@@ -38,7 +38,7 @@
 
 // player input easing?
 
-W = innerWidth
+W = innerWidth	
 H = innerHeight
 
 $ = document
@@ -76,7 +76,7 @@ o = 0
 
 // start invaders and draw inital blocks
 // 5 rows // 3 columns
-for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .8*H, W/10, 50)
+for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .8*H, W/8, 50)
 
 // key events
 onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
@@ -94,7 +94,7 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 	p+=k[65]?-t:k[68]?+t:0
 
 	// player shoots
-	if(k[32] && o%5<1)b.push({x:p, y:1, v:-t})
+	if(k[32] && o%9<1)b.push({x:p, y:1, v:-t})
 
 	// invaders shoot
 	ff = n[~~(m.random()*n[L])]
@@ -134,7 +134,10 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 
 	// draw enemies
 	n[q](function(e){
-		if(e.x>1-z|e.x<0)s=e.x<0?m.abs(s):-m.abs(s),n[q](function(e){e.y+=.1})
+		//if(e.y>1) alert('you lose')
+		if(e.x>.98|e.x<0)s=e.x<0?m.abs(s):-m.abs(s),n[q](function(e){e.y+=.1})
+
+		// speed up last enemy
 		if(n[L]<2)s=s*1.01
 		c[f](W*(e.x+=s),H*e.y,H*z,H*z)
 	})
