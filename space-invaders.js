@@ -56,8 +56,7 @@ $.body[C][0].height = H
 
 p = .5
 z = .05
-b = []
-n = []
+
 m = Math
 
 t = .01
@@ -74,9 +73,18 @@ L = 'length'
 
 o = 0
 
-// start invaders and draw inital blocks
-// 5 rows // 3 columns
-for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .8*H, W/8, 50)
+// game start/restart
+function R () {
+	n = []
+	b = []
+	// start invaders and draw inital blocks
+	// 5 rows // 3 columns
+	c2.globalCompositeOperation='source-over'
+	for(i=5;i--;)for(j=3;j--;)n.push({x: i*.1+.1*j, y: j*.1}),c2[f](W/5*i+W*.05, .8*H, W/8, 50)
+	c2.globalCompositeOperation='destination-out'
+}
+
+R()
 
 // key events
 onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
@@ -105,6 +113,9 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 	i=b[L];while(i--){
 		l=b[i]
 
+		// player coll
+		//if(l.y>.95 && l.v>0 && p-l.x<z/2 && p-l.x>-z/2) R()
+
 		// -5+half-of-player on x to set pivot to middle
 		x= W*l.x-5 + H*z/2
 		y= (l.y+=l.v)*H
@@ -114,7 +125,6 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 
 		// bitmap coll
 		if(c2.getImageData(x, y, 1, 1).data[3]>0){
-			c2.globalCompositeOperation='destination-out'
 			c2.beginPath()
 			c2.arc(x,y,20,0,7)
 			c2.fill()
@@ -126,15 +136,13 @@ onkeydown=onkeyup=function(e){k[e.keyCode]=e.type!='keyup'}
 			if(!(l.x+z<e.x|l.y+z<e.y|l.y>e.y+z|l.x>e.x+z))if(l.v<0) n[S](i,1),a=1
 		})
 
-		//if(l.y>.95 && l.v>0 && p-l.x<z/2 && p-l.x>-z/2) ''
-
 		// remove or draw?
 		a?(b[S](i,1),a=0):c[f](x, y, 10, 30)
 	}
 
 	// draw enemies
 	n[q](function(e){
-		//if(e.y>1) alert('you lose')
+		if(e.y>.9) R()
 		if(e.x>.98|e.x<0)s=e.x<0?m.abs(s):-m.abs(s),n[q](function(e){e.y+=.1})
 
 		// speed up last enemy
